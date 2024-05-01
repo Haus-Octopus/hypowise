@@ -1,0 +1,21 @@
+# Local all terraform directories
+**/.terraform/*
+*.tfstate
+*.backup
+*.hcl
+.terraformrc
+terraform.rc
+
+# Ignore variables files
+*.auto.tfvars
+
+# Ignore override files
+*.tfoverride
+
+# Ignore environment-specific files
+.envrc
+
+# Ignore all zip files
+*.zip
+
+
