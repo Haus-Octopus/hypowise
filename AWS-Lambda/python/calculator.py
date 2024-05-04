@@ -82,6 +82,7 @@ def organize_data_by_year(payments_list):
     return offer_details
 
 def lambda_handler(event, context):
+    origin = event['headers'].get('origin', '*') 
     data = json.loads(event.get('body', '{}'))
     loan_amount = data.get('loanAmount')
     annual_interest_rate = data.get('annualInterestRate')
@@ -99,5 +100,10 @@ def lambda_handler(event, context):
     return {
         "statusCode": 200,
         "body": json.dumps(response),
-        "headers": {"Content-Type": "application/json"}
+        "headers": {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": origin,  # Echo back the Origin header
+            "Access-Control-Allow-Methods": "OPTIONS, POST",
+            "Access-Control-Allow-Headers": "Content-Type, X-Amz-Date, Authorization, X-Api-Key, X-Amz-Security-Token"
+        }
     }

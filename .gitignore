@@ -1,5 +1,10 @@
-# Local .terraform directories
+# Local all terraform directories
 **/.terraform/*
+*.tfstate
+*.backup
+*.hcl
+.terraformrc
+terraform.rc
 
 # Ignore variables files
 *.auto.tfvars
@@ -10,8 +15,7 @@
 # Ignore environment-specific files
 .envrc
 
-# Ignore CLI configuration files
-.terraformrc
-terraform.rc
+# Ignore all zip files
+*.zip
 
-python/calculator.zip
+
