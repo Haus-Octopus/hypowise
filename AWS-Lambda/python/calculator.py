@@ -69,7 +69,6 @@ def organize_data_by_year(payments_list):
         total_payment += year['totalPayment']
 
     offer_details = {
-        "offerId": "1",
         "details": {
             "years": year_list,
             "totalInterestPaid": round(total_interest, 2),
