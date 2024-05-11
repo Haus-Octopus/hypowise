@@ -1,3 +1,17 @@
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+  }
+}
+
+# Configure the AWS Provider
+provider "aws" {
+  region = "eu-central-1"
+}
+
 resource "aws_iam_role" "lambda_role" {
  name   = "terraform_aws_lambda_role"
  assume_role_policy = <<EOF
@@ -123,7 +137,35 @@ module "api_gateway_cors" {
   api_resource_id  = aws_api_gateway_resource.api_resource.id
 }
 
+# FIXME: Create IAM roles on Rashmi's Account, transfer DNS Management to Route53, and then create the ACM certificate.
+# Setting Domain URL
+resource "aws_acm_certificate" "cert" {
+  domain_name               = "hypowise.de"
+  validation_method         = "DNS"
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "aws_api_gateway_domain_name" "api_domain" {
+  domain_name              = "hypowise.de"
+  certificate_arn          = aws_acm_certificate.cert.arn
+
+  endpoint_configuration {
+    types = ["EDGE"]
+  }
+}
+
+resource "aws_api_gateway_base_path_mapping" "base_path" {
+  api_id      = aws_api_gateway_rest_api.api_gateway.id
+  stage_name  = aws_api_gateway_deployment.api_deployment.stage_name
+  domain_name = aws_api_gateway_domain_name.api_domain.domain_name
+  base_path   = "api"
+}
+
+
 
 output "api_endpoint" {
-  value = "${aws_api_gateway_deployment.api_deployment.invoke_url}/calculate"
+  value = "https://${aws_api_gateway_domain_name.api_domain.domain_name}/api"
 }
