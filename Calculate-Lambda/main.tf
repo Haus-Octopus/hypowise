@@ -53,14 +53,14 @@ resource "aws_iam_role_policy_attachment" "attach_iam_policy_to_iam_role" {
 
 data "archive_file" "zip_the_python_code" {
  type        = "zip"
- source_dir  = "${path.module}/python/"
- output_path = "${path.module}/python/calculator.zip"
+ source_dir  = "${path.module}/calculate-lambda/"
+ output_path = "${path.module}/calculate-lambda/calculator.zip"
 }
 
 # Create a lambda function
 # In terraform ${path.module} is the current directory.
 resource "aws_lambda_function" "terraform_lambda_func" {
- filename                       = "${path.module}/python/calculator.zip"
+ filename                       = "${path.module}/calculate-lambda/calculator.zip"
  function_name                  = "Calculator-Function"
  role                           = aws_iam_role.lambda_role.arn
  handler                        = "calculator.lambda_handler"
