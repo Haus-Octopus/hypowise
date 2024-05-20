@@ -130,7 +130,7 @@ resource "aws_dynamodb_table" "user_offers" {
   name         = "UserOffers"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "UserID"
-  range_key    = "OfferID"
+  range_key    = "OfferName"
 
   attribute {
     name = "UserID"
@@ -138,7 +138,7 @@ resource "aws_dynamodb_table" "user_offers" {
   }
 
   attribute {
-    name = "OfferID"
+    name = "OfferName"
     type = "S"
   }
 }
