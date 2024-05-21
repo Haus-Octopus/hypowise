@@ -26,11 +26,19 @@ def lambda_handler(event, context):
         
         return {
             'statusCode': 200,
+            'headers': {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            },
             'body': json.dumps(offers, cls=DecimalEncoder)
         }
     except Exception as e:
         print(f"Error: {str(e)}")  # Debug log
         return {
             'statusCode': 500,
+            'headers': {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            },
             'body': json.dumps(f"Error reading offers: {str(e)}")
         }

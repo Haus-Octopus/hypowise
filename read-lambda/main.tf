@@ -128,6 +128,16 @@ resource "aws_api_gateway_deployment" "api_deployment" {
   stage_name  = "prod"
 }
 
+
+# Cors
+
+module "api_gateway_cors" {
+  source = "squidfunk/api-gateway-enable-cors/aws"
+  version = "0.3.3"
+  api_id = aws_api_gateway_rest_api.api_gateway.id
+  api_resource_id = aws_api_gateway_resource.offers_resource.id
+}
+
 output "read_api_endpoint" {
   value = "${aws_api_gateway_deployment.api_deployment.invoke_url}/users/{user_id}/offers"
 }
